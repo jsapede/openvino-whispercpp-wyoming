@@ -104,6 +104,9 @@ wget https://huggingface.co/Intel/whisper.cpp-openvino-models/resolve/main/ggml-
 unzip ggml-medium-models.zip
 ```
 
+on low power iGPU you should use ggml-small-models.zip instead, to avoid many seconds latency.
+
+
 4/ Build Docker Stack
 
 a docker-compose file is provided int the wyoming-whispercpp-openvino-gpu that should ba adjusted to your configuration / language / hardware ..
@@ -141,7 +144,7 @@ services:
       --language fr # adjust to your anguage
       --ov-e-device CPU # adjut according to your hardware CPU or GPU. iGPU doesnt work with GPU setting
       --beam-size 5
-      --model /data/ggml-medium.bin # specify the model you want to use
+      --model /data/ggml-small.bin # specify the model you want to use. on iGPU use small
       --host 0.0.0.0
       --port 8910
       --debug-mode

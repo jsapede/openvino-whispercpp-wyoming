@@ -11,7 +11,7 @@ it relies on:
   
   https://github.com/ser/wyoming-whisper-api-client
 
-  1/ Environment setting
+#  1/ Environment setting
 
 On proxmox create a Docker LXC, preferably using the "helper scripts" : https://community-scripts.github.io/ProxmoxVE/scripts?id=docker
 
@@ -49,7 +49,7 @@ find your "video" group id (usualy 44)  :
 getent group video
 ```
 
-2/ Prepare Wyoming API
+# 2/ Prepare Wyoming API
 
 clone the wyoming whisper api client repo and build the docker image. In the lxc console : 
 
@@ -61,7 +61,7 @@ docker build -t wyoming-whisper-api-client:latest .
 ```
 
 
-3/ Prepare WhisperCPP Openvino
+# 3/ Prepare WhisperCPP Openvino
 
 clone the wyoming whispercpp openvino repo and build the docker image. In the lxc console : 
 
@@ -99,7 +99,7 @@ docker build -t whispercpp-openvino:latest .
 
 now image whispercpp-openvino:latest should be locally available for docker usage.
 
-3/ Get Models
+# 4/ Get Models
 
 GGML Models are available on Huggingface : https://huggingface.co/Intel/whisper.cpp-openvino-models/tree/main
 
@@ -122,7 +122,7 @@ unzip ggml-medium-models.zip
 on low power iGPU you should use ggml-small-models.zip instead, to avoid many seconds latency.
 
 
-4/ Build Docker Stack
+# 5/ Build Docker Stack
 
 a docker-compose file is provided int the wyoming-whispercpp-openvino-gpu that should ba adjusted to your configuration / language / hardware ..
 
@@ -193,7 +193,7 @@ or in detached mode :
 docker compose up -d
 ```
 
-5/ Add to Homeassistant :
+# 6/ Add to Homeassistant :
 
 in Homeassistant add the Wyoming protocol integration :
 

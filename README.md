@@ -77,7 +77,9 @@ cd wyoming-whispercpp-openvino-gpu
 cp whispercpp-openvino.Dockerfile Dockerfile
 ```
 
-NOTE: Image bilding returns a warning on LD_LIBRARY_PATH, related to en ENV variable not defined in the Dockerfile line 61 :
+NOTE: 
+
+Image building returns a warning on LD_LIBRARY_PATH, related to en ENV variable not defined in the Dockerfile at line 61 :
 
 ```
 ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64:$LD_LIBRARY_PATH

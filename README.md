@@ -86,7 +86,7 @@ ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64:$LD_LIBRARY_PATH
 change it to
 
 ```
-ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64
 ```
 
 now build the WhisperCPP image :

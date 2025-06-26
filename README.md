@@ -77,7 +77,7 @@ cd wyoming-whispercpp-openvino-gpu
 cp whispercpp-openvino.Dockerfile Dockerfile
 ```
 
-NOTE: 
+* NOTE:
 
 Image building returns a warning on LD_LIBRARY_PATH, related to en ENV variable not defined in the Dockerfile at line 61 :
 

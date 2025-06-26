@@ -20,6 +20,7 @@ select :
 -  advanced mode
 -  privileged
 -  8GB RAM
+-  16GB storage
 -  max CPU
 
   once lxc is created add you GPU passthrough to the LXC :
@@ -74,6 +75,18 @@ Dockerfile provided in the repo should be renamed for easier usage :
 ```
 cd wyoming-whispercpp-openvino-gpu
 cp whispercpp-openvino.Dockerfile Dockerfile
+```
+
+NOTE: Image bilding returns a warning on LD_LIBRARY_PATH, related to en ENV variable not defined in the Dockerfile line 61 :
+
+```
+ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64:$LD_LIBRARY_PATH
+```
+
+change it to
+
+```
+ENV LD_LIBRARY_PATH=$INTEL_OPENVINO_DIR/runtime/lib/intel64:$LD_LIBRARY_PATH
 ```
 
 now build the WhisperCPP image :

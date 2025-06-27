@@ -133,17 +133,46 @@ cd /opt
 nano docker-compose.yml
 ```
 
-and add the stack description 
+and add the stacks descriptions 
 
 ```
 services:
-  whisper: # wyoming endpoint for HASS
-    container_name: whisper
+  whispercpp: # whisper-server backend for wyoming 
+    container_name: whispercpp
+    privileged: true
+    command:
+      --language fr
+      --threads 6
+      --ov-e-device CPU
+      --beam-size 5
+      --model /data/ggml-small.bin
+      --host 0.0.0.0
+      --port 8910
+      --prompt "allume lampe bureau ouvre volet roulant salon cuisine mezzanine serrure entrée eteins ferme vent lumière puissance énergie fenètre BSO brise-soleil"
+      --debug-mode
+    image: whispercpp-openvino:latest
+    devices:
+      - /dev/dri:/dev/dri
+    security_opt:
+      - seccomp=unconfined
+    group_add:
+      - 44 # use the id returned by  $(getent group video)
+      - 104
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /opt/ggml:/data
+    environment:
+      - TZ=Europe/Paris
+    restart: unless-stopped
+    ports:
+      - 8910:8910
+
+  wyoming-api: # wyoming endpoint for HASS
+    container_name: wyoming-api
     command:
       --uri tcp://0.0.0.0:10300
       --api http://192.168.0.233:8910/inference # adjust the IP to your framework 
-      --debug
-    image: wyoming-whisper-api-client:latest # the local image we built
+    image: wyoming-api:latest # the local image we built
     volumes:
       - /etc/localtime:/etc/localtime:ro
     environment:
@@ -151,34 +180,6 @@ services:
     restart: unless-stopped
     ports:
       - 10300:10300
-
-  whispercpp: # whisper-server backend for wyoming 
-    container_name: whispercpp
-    privileged: true # ensure access to iGPU
-    command:
-      --language fr # adjust to your anguage
-      --ov-e-device CPU # adjut according to your hardware CPU or GPU. iGPU doesnt work with GPU setting
-      --beam-size 5
-      --model /data/ggml-small.bin # specify the model you want to use. on iGPU use small
-      --host 0.0.0.0
-      --port 8910
-      --debug-mode
-    image: whispercpp-openvino:latest # the image we built
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128 # passtrhough of iGPU
-      - /dev/dri/card0:/dev/dri/card0 #passthrough of iGPU. maybe card0 or card1. adjust
-    security_opt:
-      - seccomp=unconfined
-    group_add:
-      - 44 # the video group id
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /opt/ggml:/data # the folder where we store ggml models
-    environment:
-      - TZ=Europe/Paris #adjust to your timezone
-    restart: unless-stopped
-    ports:
-      - 8910:8910
 ```
 
 now you should be able to run the stack : 
